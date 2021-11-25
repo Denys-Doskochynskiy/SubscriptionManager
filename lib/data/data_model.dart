@@ -5,8 +5,8 @@ class SubscriptionData {
   final String deadline;
 
   SubscriptionData(
-      {required this.id,
-      required this.email,
-      required this.subscriptionName,
-      required this.deadline});
+      {this.id = "12331",
+      this.email = "",
+      this.subscriptionName = "",
+      this.deadline = ""});
 }
