@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:subscription_manager/components/fetch_data/item_bloc.dart';
+import 'package:subscription_manager/bloc/api_bloc.dart';
+import 'package:subscription_manager/bloc/item_option_bloc.dart';
+import 'package:subscription_manager/components/fetch_data/delete_icon.dart';
 import 'package:subscription_manager/data/data_model.dart';
 import 'package:subscription_manager/data/decoration.dart';
-import 'package:subscription_manager/services/firestore_db.dart';
 
 Widget _moreInfo(BuildContext context, String email, String deadline) {
   return Container(
@@ -34,48 +35,40 @@ class SubscriptionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      margin: const EdgeInsets.all(10),
-      decoration: shadowBox,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
+    return BlocProvider(
+        create: (context) => ApiFirestoreBloc(SubscriptionData()),
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          decoration: shadowBox,
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: const EdgeInsets.all(15),
-                child: Text(
-                  element.subscriptionName,
-                  style: const TextStyle(fontSize: 22),
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(15),
+                    child: Text(
+                      element.subscriptionName,
+                      style: const TextStyle(fontSize: 22),
+                    ),
+                  ),
+                  BlocBuilder<ShowMoreBloc, bool>(
+                      builder: (context, currentStatus) => Container(
+                            child: (currentStatus)
+                                ? _moreInfo(
+                                    context, element.email, element.deadline)
+                                : Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                  ),
+                          )),
+                ],
               ),
-              BlocBuilder<ShowMoreBloc, bool>(
-                  builder: (context, currentStatus) => Container(
-                        child: (currentStatus)
-                            ? _moreInfo(
-                                context, element.email, element.deadline)
-                            : Container(),
-                      )),
+              DeleteIcon(elementId: element.id)
             ],
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              child: InkWell(
-                  child: const Icon(
-                    Icons.delete,
-                    size: 30,
-                  ),
-                  onTap: () =>
-                      DatabaseServices(documentId: element.id).deleteData()),
-            ),
-          )
-        ],
-      ),
-    );
+        ));
   }
 }
