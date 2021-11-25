@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:subscription_manager/components/create/create_item.dart';
+import 'package:subscription_manager/components/create/create_item_view.dart';
 import 'package:subscription_manager/data/decoration.dart';
 
 class CustomFloatingButton extends StatelessWidget {
