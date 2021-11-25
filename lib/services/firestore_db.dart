@@ -9,19 +9,16 @@ class DatabaseServices {
   CollectionReference reference =
       FirebaseFirestore.instance.collection("Flutter");
 
-  Future updateData(
-      String subscriptionName, String email, String deadline) async {
+  Future updateData(SubscriptionData subscriptionData) async {
     return await reference.doc().set({
-      "subscriptionName": subscriptionName,
-      "email": email,
-      'deadline': deadline,
+      "subscriptionName": subscriptionData.subscriptionName,
+      "email": subscriptionData.email,
+      'deadline': subscriptionData.deadline,
     });
   }
 
   Future deleteData() async {
-    return await reference.doc(documentId).delete().then((value) {
-      print("proizoshol remove for dummy object " + documentId);
-    });
+    return await reference.doc(documentId).delete();
   }
 
   List<SubscriptionData> _dataFromSnapshot(QuerySnapshot snapshot) {

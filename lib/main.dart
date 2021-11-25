@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:subscription_manager/components/fetch_data/item_bloc.dart';
+import 'package:subscription_manager/bloc/item_option_bloc.dart';
 import 'package:subscription_manager/components/navigation/app_bar_main.dart';
 import 'package:subscription_manager/data/data_model.dart';
 import 'package:subscription_manager/services/firestore_db.dart';
@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: BlocProvider(
           create: (context) => ShowMoreBloc(true),
           child: const MyHomePage(title: 'Subscription Manager')),
